@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hitcon2018.Wallet.LogPage"
+            xmlns:pages="clr-namespace:Acr.XamForms.Pages;assembly=Acr.XamForms"
+            xmlns:behaviors="clr-namespace:Acr.XamForms.Behaviors;assembly=Acr.XamForms"
+            xmlns:ble="clr-namespace:Hitcon2018.Wallet;assembly=Hitcon2018.Wallet">
+
+    <ContentPage.BindingContext>
+        <ble:LogViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clear" Command="{Binding Clear}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding Logs}">
+            <ListView.Behaviors>
+                <behaviors:ItemTappedCommandBehavior Command="{Binding Show}" />
+            </ListView.Behaviors>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Text}" Detail="{Binding Details}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>
