@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Hitcon2018.Wallet"
+             xmlns:behaviors="clr-namespace:Acr.XamForms.Behaviors;assembly=Acr.XamForms"
+             x:Class="Hitcon2018.Wallet.WalletPage">
+    
+    
+    <ContentPage.BindingContext>
+        <local:WalletViewModel />
+    </ContentPage.BindingContext>
+    
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0" Orientation ="Horizontal">
+            <Image Source="icon_Plus.png"
+                   VerticalOptions="Start" 
+                   HorizontalOptions="Start" 
+                   WidthRequest="50" 
+                   HeightRequest="50" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddWallet}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Wallet"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="30"/>
+            
+            <Image Source="icon_Menu.png"
+                   VerticalOptions="Start" 
+                   HorizontalOptions="End" 
+                   WidthRequest="50" 
+                   HeightRequest="50" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Setting}"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1">
+            <Image Source="P3_bg.png" WidthRequest="300" Aspect="AspectFill" VerticalOptions="End"/>
+        </StackLayout>
+        
+
+        <Grid Grid.Row="2">
+            <ListView ItemsSource="{Binding Accounts}" RowHeight="100" SeparatorVisibility="Default" BackgroundColor="#eee">
+                <ListView.Behaviors>
+                    <behaviors:ItemTappedCommandBehavior Command="{Binding SelectedAccount}" />
+                </ListView.Behaviors>
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <!--<ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="AUTO"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Address}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding Amount, StringFormat=' {0} HTN'}" Grid.Row="1" Grid.Column="0"/>
+                            </Grid>
+                        </ViewCell>-->
+                        <!--<ImageCell ImageSource="{Binding Icon}"/>-->
+                        <!--<TextCell Detail="{Binding AccountName}" Text="{Binding Amount, StringFormat=' {0} HTN',Mode=OneWay}"/>-->
+
+                        <ViewCell>
+                            <ContentView>
+                                <Frame OutlineColor="Accent" Padding="10">
+                                    <StackLayout Orientation="Horizontal">
+                                        <!--<BoxView x:Name="boxView" 
+                                         Color="{Binding Color}" 
+                                         WidthRequest="50" 
+                                         HeightRequest="50" />-->
+                                        <Image Source="P3_wallet.png" IsVisible="{Binding isBadge}" WidthRequest="50" HeightRequest="50"/>
+                                        <Image Source="P3_ethereum.png" IsVisible="{Binding isSoftAccount}" WidthRequest="50" HeightRequest="50"/>
+                                        <StackLayout>
+                                            <Label Text="{Binding AccountName}"
+                                           FontSize="22" 
+                                           VerticalOptions="StartAndExpand" />
+                                            <Label Text="{Binding Amount, StringFormat=' {0} HTN',Mode=OneWay}" 
+                                                   FontSize="16" 
+                                                   VerticalOptions="CenterAndExpand" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </ContentView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <StackLayout Orientation="Horizontal">
+                <!--<Button Text="Transfer"/>-->
+                <!--<Button Text="Disconnect to Badge" Command="{Binding Disconnect }"/>
+                <Button Text="Refresh" Command="{Binding LoadAccounts}"/>
+                <Button Text="Reset All" Command="{Binding Reset}"/>-->
+                
+            </StackLayout>
+        </Grid>
+
+    </Grid>
+</ContentPage>

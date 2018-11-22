@@ -164,4 +164,64 @@
       <Name>Hitcon2018.Wallet</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\zero.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bg_font_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon2_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon3_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon4_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EthPage_bg_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\transPage01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Gear.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Cloud.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\icon_Plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\P3_wallet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\P3_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\P3_ethereum.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\P3_BG_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Hiconv7_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Hicon_wallet_01.png" />
+  </ItemGroup>
 </Project>

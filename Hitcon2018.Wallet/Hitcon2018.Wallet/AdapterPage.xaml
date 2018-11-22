@@ -6,6 +6,7 @@
             Title="BLE Plugin">
 
     <TabbedPage.Children>
+        <ble:ScanQRcodePage Title="Scan QR Code"/>
         <ble:ScanPage Title="Scan" />
         <ble:LogPage Title="Logs" />
         <ble:ServerPage Title="GATT Server" />

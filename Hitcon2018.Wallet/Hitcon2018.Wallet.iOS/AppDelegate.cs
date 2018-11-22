@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using AVFoundation;
 using Foundation;
 using Plugin.BluetoothLE;
 using UIKit;
@@ -24,10 +24,10 @@ namespace Hitcon2018.Wallet.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            CrossBleAdapter.Init(BleAdapterConfiguration.DefaultBackgroudingConfig);
+            ZXing.Net.Mobile.Forms.iOS.Platform.Init();
             LoadApplication(new App());
-
             return base.FinishedLaunching(app, options);
         }
+        
     }
 }

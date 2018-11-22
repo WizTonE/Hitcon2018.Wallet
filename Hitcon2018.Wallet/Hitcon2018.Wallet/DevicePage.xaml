@@ -24,8 +24,8 @@
 
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <ViewCell Height="30">
-                            <ContentView Padding="20,0,0,0">
+                        <ViewCell Height="50">
+                            <ContentView Padding="50,0,0,0">
                                 <Label Text="{Binding Name, StringFormat='Service {0}'}"
                                        FontSize="18"
                                        FontAttributes="Bold" />

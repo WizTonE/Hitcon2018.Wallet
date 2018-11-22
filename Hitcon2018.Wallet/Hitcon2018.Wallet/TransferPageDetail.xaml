@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Hitcon2018.Wallet"
+             x:Class="Hitcon2018.Wallet.TransferPageDetail"
+             Title="Detail">
+    
+    <ContentPage.BindingContext>
+        <local:TransferPageViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="10">
+        <Label Text="TransferPage" FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+        <Label Text="To Address" />
+        <StackLayout Orientation="Vertical">
+            <Button Text="Scan Address QRCode" Command="{Binding ScanAddress}"/>
+            <Entry Text="{Binding ToAddress, Mode=TwoWay}" />
+        </StackLayout>
+        <Label Text="Amount"/>
+            <Entry Keyboard="Numeric" Placeholder="1" Text="{Binding Amount, Mode=TwoWay}" />
+        <!--<StackLayout Orientation="Horizontal">
+            <Label Text="HTN"/>
+        </StackLayout>-->
+        <Label Text="gasprice"/>
+        <Entry Keyboard="Numeric" Placeholder="99000000000" IsEnabled="False" Text="{Binding Gasprice, Mode=TwoWay}" />
+        <Label Text="gaslimit"/>
+        <Entry Keyboard="Numeric" Placeholder="300000" IsEnabled="False" Text="{Binding Gaslimit, Mode=TwoWay}" />
+        <Button Text="Transfer" Command="{Binding Transfer}"/>
+        <!--<Button Text="Update Balance" Command="{Binding UpdateBalance}"/>-->
+    </StackLayout>
+</ContentPage>

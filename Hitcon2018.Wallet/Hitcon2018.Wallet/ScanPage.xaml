@@ -50,7 +50,7 @@
 
                                     <Label Text="{Binding Name}" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="15" />
                                     <Label Text="{Binding Rssi, StringFormat='RSSI: {0}'}" Grid.Row="0" Grid.Column="1" TextColor="Red" />
-                                    <Label Text="{Binding Uuid, StringFormat='UUID: {0}'}" Grid.Row="1" Grid.ColumnSpan="2" FontAttributes="Italic" />
+                                    <Label Text="{Binding ServiceUuid, StringFormat='UUID: {0}'}" Grid.Row="1" Grid.ColumnSpan="2" FontAttributes="Italic" />
 
                                     <Label Text="{Binding IsConnectable, StringFormat='Connectable: {0}'}" Grid.Row="2" Grid.Column="0" />
                                     <Label Text="{Binding ServiceCount, StringFormat=@'{0} Services'}" Grid.Row="2" Grid.Column="1" />

@@ -16,5 +16,5 @@ namespace Hitcon2018.Wallet
 		{
 			InitializeComponent ();
 		}
-	}
+    }
 }

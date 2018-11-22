@@ -10,6 +10,11 @@ namespace Hitcon2018.Wallet
         //IDisposable nameOb;
         public IDevice Device { get; private set; }
 
+        Guid serviceUuid;
+        public Guid ServiceUuid {
+            get => this.serviceUuid;
+            set=> this.RaiseAndSetIfChanged(ref this.serviceUuid, value);
+        }
 
         string name;
         public string Name
@@ -113,6 +118,7 @@ namespace Hitcon2018.Wallet
                     this.IsConnectable = ad.IsConnectable;
                     this.LocalName = ad.LocalName;
                     this.TxPower = ad.TxPower;
+                    this.ServiceUuid = ad.ServiceUuids.Length > 0 ? ad.ServiceUuids[0] : default(Guid) ;
                     this.ManufacturerData = ad.ManufacturerData == null
                         ? null
                         : BitConverter.ToString(ad.ManufacturerData);

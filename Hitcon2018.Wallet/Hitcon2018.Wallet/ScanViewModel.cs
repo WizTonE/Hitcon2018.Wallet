@@ -61,7 +61,7 @@ namespace Hitcon2018.Wallet
             );
 
             this.ScanToggle = ReactiveCommand.Create(
-                () =>
+                async () =>
                 {
                     if (this.IsScanning)
                     {
@@ -71,17 +71,61 @@ namespace Hitcon2018.Wallet
                     else
                     {
                         this.Devices.Clear();
-
+                        var walletSettings = await App.Database.BadgeDAO.GetItemsAsync();
+                        var walletSetting = walletSettings.Last();
+                        var badgeSeviceUuid = walletSetting != null ? new Guid(walletSetting.ServiceUUID) : default(Guid);
                         this.IsScanning = true;
                         this.scan = CrossBleAdapter
                             .Current
                             .Scan()
-                            .Buffer(TimeSpan.FromSeconds(1))
+                            .Buffer(TimeSpan.FromSeconds(0.5))
                             .ObserveOn(RxApp.MainThreadScheduler)
                             .Subscribe(results =>
                             {
                                 foreach (var result in results)
-                                    this.OnScanResult(result);
+                                { 
+                                    try
+                                    {
+                                        if (result.AdvertisementData.ServiceUuids.Length > 0)
+                                            this.OnScanResult(result);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex);
+                                    }
+                                }
+
+                                IScanResult findBadge = null;
+                                foreach (var item in results)
+                                {
+                                    try
+                                    {
+                                        if (item.AdvertisementData.ServiceUuids.Length > 0 && item.AdvertisementData.ServiceUuids[0].Equals(badgeSeviceUuid))
+                                        {
+                                            findBadge = item;
+                                            Badge.Instance.BleDevice = item.Device;
+                                            break;
+                                        }
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        Console.WriteLine(ex.ToString());
+                                    }
+                                }
+
+                                if (findBadge != null)
+                                {
+                                    //findBadge = new ScanResult(new Device)
+                                    this.scan?.Dispose();
+                                    this.IsScanning = false;
+                                    //App.Current.MainPage.Navigation.PushAsync(new DevicePage
+                                    //{
+                                    //    BindingContext = new DeviceViewModel(findBadge.Device)
+                                    //});
+                                    Badge.Instance.ConnectToBadge();
+                                    App.Current.MainPage.Navigation.PopAsync();
+                                }
+                                
                             });
                     }
                 },

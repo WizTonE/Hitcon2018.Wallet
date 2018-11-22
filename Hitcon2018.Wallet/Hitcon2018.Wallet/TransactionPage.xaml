@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Hitcon2018.Wallet;assembly=Hitcon2018.Wallet"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             x:Class="Hitcon2018.Wallet.TransactionPage"
+             >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+            <!--<zxing:ZXingBarcodeImageView BarcodeFormat="QR_CODE" BarcodeValue="{Binding Address, Mode=OneWay}"/>-->
+        <Image Grid.Row="0" Source="Hicon_wallet_01.png" WidthRequest="300" HeightRequest="300" />
+        
+        <StackLayout Grid.Row="1">
+            <Label Text="{Binding Balance, StringFormat=' {0} HTN' }" HorizontalOptions="Center"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button Text="Send" IsEnabled="{Binding CanTransfer}" Command="{Binding SendTransaction}"/>
+                <Button Text="Recieve" Command="{Binding Recieve}"/>
+            </StackLayout>
+        </StackLayout>
+        
+        <StackLayout Grid.Row="2">
+            <ListView ItemsSource="{Binding TransactionHistories}" 
+                      IsPullToRefreshEnabled="true" 
+                      SelectedItem="{Binding Selected}"
+                      RefreshCommand="{Binding LoadTransactionHistory}" 
+                      IsRefreshing="{Binding IsRefreshing}"
+                      RowHeight="150"
+                      SeparatorVisibility="Default" 
+                      SeparatorColor="BlueViolet"
+                      BackgroundColor="#eee"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="{Binding ShowToken}" TextColor="DarkBlue" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding TransactionDate}" TextColor="Coral" Grid.Row="0" Grid.Column="1"/>
+                                <Label Text="{Binding From, StringFormat='From : {0}'}" Grid.Row="1" Grid.Column="0"/>
+                                <Label Text="{Binding To, StringFormat='To : {0}'}" Grid.Row="1" Grid.Column="1"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="P3_wallet.png" WidthRequest="50" HeightRequest="50" IsVisible="{Binding BadgeEnable}"/>
+                <!--<Button Text="Refresh" Command="{Binding LoadTransactionHistory}"/>-->
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+</ContentPage>

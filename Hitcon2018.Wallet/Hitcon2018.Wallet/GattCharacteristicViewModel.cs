@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using Acr;
 using Acr.UserDialogs;
+using Org.BouncyCastle.Security;
 using Plugin.BluetoothLE;
 using ReactiveUI;
 using Xamarin.Forms;
@@ -15,6 +17,7 @@ namespace Hitcon2018.Wallet
     public class GattCharacteristicViewModel : ViewModel
     {
         IDisposable watcher;
+        private string AESKey;
 
 
         public GattCharacteristicViewModel(IGattCharacteristic characteristic)
@@ -66,10 +69,11 @@ namespace Hitcon2018.Wallet
 
         public void Select()
         {
+            //AESKey = App.Database.GetItemAsync(0).Result.AESKey;
             var cfg = new ActionSheetConfig()
                 .SetTitle($"{this.Description} - {this.Uuid}")
                 .SetCancel();
-
+            Characteristic.Service.GetKnownCharacteristics();
             if (this.Characteristic.CanWriteWithResponse())
                 cfg.Add("Write With Response", () => this.DoWrite(true));
 
@@ -91,6 +95,10 @@ namespace Hitcon2018.Wallet
                 UserDialogs.Instance.ActionSheet(cfg.SetCancel());
         }
 
+        private string ConvertToHex(object value)
+        {
+            return BitConverter.ToString(Encoding.Default.GetBytes(value.ToString())).Replace("-","");
+        }
 
         async void SendBlob()
         {
@@ -100,7 +108,9 @@ namespace Hitcon2018.Wallet
                 .SetMessage("Use reliable write transaction?")
             );
             var cts = new CancellationTokenSource();
-            var bytes = Encoding.UTF8.GetBytes(RandomString(5000));
+            
+
+            var bytes = Encoding.UTF8.GetBytes(new Random(500).ToString());
             var dlg = UserDialogs.Instance.Loading("Sending Blob", () => cts.Cancel(), "Cancel");
             var sw = new Stopwatch();
             sw.Start();
@@ -136,8 +146,27 @@ namespace Hitcon2018.Wallet
 
             if (result.Ok && !String.IsNullOrWhiteSpace(result.Text))
             {
-                var v = result.Text.Trim();
-                var bytes = utf8 ? Encoding.UTF8.GetBytes(v) : v.FromHexString();
+                //var v = result.Text.Trim();
+                //var bytes = utf8 ? Encoding.UTF8.GetBytes(v) : v.FromHexString();
+                var htoaddress = ConvertToHex("0xFbF065C72Ad57611d26DCcd5041806fB5A988D92");
+                var hvalue = ConvertToHex("1000000000000000000");
+                var hgasprice = ConvertToHex("1");
+                var hgaslimit = ConvertToHex("1");
+                var hnoice = ConvertToHex("1");
+                var hdata = ConvertToHex("123123123");
+                String Transaction_array =
+                    "01" + String.Format("%02X", htoaddress.Length / 2) + htoaddress +
+                            "02" + String.Format("%02X", hvalue.Length / 2) + hvalue +
+                            "03" + String.Format("%02X", hgasprice.Length / 2) + hgasprice +
+                            "04" + String.Format("%02X", hgaslimit.Length / 2) + hgaslimit +
+                            "05" + String.Format("%02X", hnoice.Length / 2) + hnoice +
+                            "06" + String.Format("%02X", hdata.Length / 2) + hdata;
+                var bytes = Encoding.UTF8.GetBytes(Transaction_array);
+                byte[] iv = new byte[16];
+                SecureRandom random = new SecureRandom();
+                random.NextBytes(iv);
+                var key  = Encoding.UTF8.GetBytes(AESKey);
+                byte[] encrypteddata = Encoding.UTF8.GetBytes(ConvertToHex(iv) + ConvertToHex(EncryptAES(iv, key, bytes)));
                 if (withResponse)
                 {
                     this.Characteristic
@@ -158,6 +187,31 @@ namespace Hitcon2018.Wallet
                             ex => UserDialogs.Instance.Alert(ex.ToString())
                         );
                 }
+            }
+        }
+
+        private byte[] EncryptAES(byte[] iv, byte[] key, byte[] text)
+        {
+            try
+            {
+                DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+                des.Key = key;
+                des.IV = iv;
+                string encrypt = "";
+                MemoryStream ms = new MemoryStream();
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(text, 0, text.Length);
+                    cs.FlushFinalBlock();
+                    encrypt = Convert.ToBase64String(ms.ToArray());
+                }
+
+
+                return ms.ToArray();
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 

@@ -16,6 +16,7 @@ namespace Hitcon2018.Wallet
 
         public DeviceViewModel(IDevice device)
         {
+            var walletSetting = App.Database.BadgeDAO.GetItemsAsync().Result.Last();
             this.device = device;
 
             this.device
@@ -58,24 +59,30 @@ namespace Hitcon2018.Wallet
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(chs =>
                 {
-                    try
+                    var serviceUuid = chs.Service.Uuid.ToString();
+                    if (serviceUuid == walletSetting.ServiceUUID)
                     {
-                        var service = this.GattCharacteristics.FirstOrDefault(x => x.ShortName.Equals(chs.Service.Uuid.ToString()));
-                        if (service == null)
+                        try
                         {
-                            service = new Group<GattCharacteristicViewModel>(
-                                $"{chs.Service.Description} ({chs.Service.Uuid})",
-                                chs.Service.Uuid.ToString()
-                            );
-                            this.GattCharacteristics.Add(service);
+
+                            var service = this.GattCharacteristics.FirstOrDefault(x => x.ShortName.Equals(chs.Service.Uuid.ToString()));
+                            if (service == null)
+                            {
+                                service = new Group<GattCharacteristicViewModel>(
+                                    $"{chs.Service.Description} ({chs.Service.Uuid})",
+                                    chs.Service.Uuid.ToString()
+                                );
+                                this.GattCharacteristics.Add(service);
+                            }
+
+                            service.Add(new GattCharacteristicViewModel(chs));
                         }
 
-                        service.Add(new GattCharacteristicViewModel(chs));
-                    }
-                    catch (Exception ex)
-                    {
-                        // eat it
-                        Console.WriteLine(ex);
+                        catch (Exception ex)
+                        {
+                            // eat it
+                            Console.WriteLine(ex);
+                        }
                     }
                 });
 

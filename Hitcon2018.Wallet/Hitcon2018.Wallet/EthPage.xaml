@@ -1,12 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Hitcon2018.Wallet"
              x:Class="Hitcon2018.Wallet.EthPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+    <ContentPage.BindingContext>
+        <local:EthViewModel />
+    </ContentPage.BindingContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="AUTO"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <StackLayout Grid.Row="0">
+            <Image Source="bg_font_01.jpg" WidthRequest="400" Aspect="AspectFill" VerticalOptions="End" />
+            <!--<Label Text="Ethereum Wallet"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                HorizontalOptions="CenterAndExpand" />-->
         </StackLayout>
-    </ContentPage.Content>
+        <!--<Grid Grid.Row="2" Margin="20,30" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackLayout Grid.Column="0">
+                <Label Text="消費總金額"/>
+                <Label Text="12345"/>
+                <Button Text="Detail"/>
+            </StackLayout>
+            
+            <StackLayout Grid.Column="2">
+                <Label Text="總餘額"/>
+                <Label Text="12345"/>
+                <Button Text="Detail"/>
+            </StackLayout>
+        </Grid>-->
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="AUTO"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--<Button Grid.Column="1" Text="付款" Command="{Binding Transfer}"/>-->
+            <Button Grid.Column="2" Text="錢包" Command="{Binding ShowAccount}"/>
+            <!--<Button Grid.Column="3" Text="查帳" Command="{Binding GetTotalBalance}"/>
+            <Button Grid.Column="4" Text="配對" Command="{Binding BLEMatching}" />-->
+        </Grid>
+        
+        <!--Header background-->
+    </Grid>
 </ContentPage>
